@@ -1,0 +1,6 @@
+{
+	"controller": "TestController",
+	"actions": {
+		"getItems": true
+	}
+}
