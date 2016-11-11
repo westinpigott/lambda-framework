@@ -245,11 +245,12 @@ module.exports = function (options, tools) {
 		},
 		deployAllApis: function (settings) {
 			var services = fs.readdirSync(ROOT_DIR + '/app/services');
-			return Promise.all(services.map((service)=> {
-				return this.deployApi(_.assign({
-					service: service
-				}, settings));
-			}));
+			return Promise.resolve(services)
+				.map((service)=>{
+					return this.deployApi(_.assign({
+						service: service
+					}, settings));
+				}, {concurrency: 1});
 		},
 		deployAll: function (settings) {
 			return this.deployAllLambdas(settings)
