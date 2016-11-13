@@ -80,6 +80,7 @@ module.exports = function (options, tools) {
 								// we need to add the base so that the files actually get added to the libs folder instead of the root
 								gulp.src([
 									APP_DIR + '/libs/**',
+									APP_DIR + '/bootstrap.js',
 									APP_DIR + '/decorators/**',
 									APP_DIR + '/services/' + settings.service + '/**',
 								], {base: APP_DIR}),

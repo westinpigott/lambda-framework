@@ -12,6 +12,8 @@ let _tools = require('./tools'),
 	_testHelper = require('./testHelper'),
 	runInitializer = require('./lambda/run');
 
+const runInitializers = {};
+
 // start a new http server that will load up the different
 
 module.exports = function(options){
@@ -42,12 +44,16 @@ module.exports = function(options){
 			app.post('/api/:service', function(req, res) {
 
 				var service = req.params.service;
-				let run = runInitializer({
-					appPath: APP_DIR,
-					env: environment,
-					service: service,
-					localMode: true
-				});
+
+				if(!runInitializers[service]){
+					runInitializers[service] = runInitializer({
+						appPath: APP_DIR,
+						env: environment,
+						service: service,
+						localMode: true
+					});
+				}
+				let run = runInitializers[service];[]
 
 				run(req.body, null, function(error, response){
 					if(error){
