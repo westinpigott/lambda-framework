@@ -11,7 +11,7 @@ var instanceCount = 0;
 let bootstrapResult;
 function bootstrap(config, bootstrapPath){
 	if(bootstrapResult){
-		bootstrapResult;
+		return bootstrapResult;
 	}
 	try{
 		let bootstrapMethod = require(bootstrapPath);
