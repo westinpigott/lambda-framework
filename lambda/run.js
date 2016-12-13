@@ -167,10 +167,10 @@ module.exports = function (overrides) {
 						result.statusCode = result.statusCode || 200;
 						callback(null, result);
 					})
-					.catch(function (error) {
-						callback(null, formatAndLogError(error));
-					});
 			})
+			.catch(function (error) {
+				callback(null, formatAndLogError(error));
+			});
 
 
 	};
