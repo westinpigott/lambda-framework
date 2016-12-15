@@ -8,7 +8,6 @@ let express = require('express'),
 	cors = require('cors');
 
 let _tools = require('./tools'),
-	_gulp = require('./gulp'),
 	_testHelper = require('./testHelper'),
 	runInitializer = require('./lambda/run');
 
@@ -21,11 +20,18 @@ module.exports = function(options){
 	const APP_DIR = Path.join(ROOT_DIR, 'app');
 
 	let tools = _tools(options);
-	let gulp = _gulp(options, tools);
+	let gulp;
 	let testHelper = _testHelper(options);
 	return {
 		tools: tools,
-		gulp: gulp,
+		gulp: function(){
+			if(!gulp){
+				const _gulp = require('./gulp');
+				gulp = _gulp(options, tools);
+			}
+
+			return gulp
+		},
 		testHelper: testHelper,
 		start: function(serverOptions){
 			var environment = serverOptions.env || 'dev';
