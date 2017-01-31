@@ -39,7 +39,7 @@ module.exports = function(options){
 			app.get('/', function(req, res){
 				res.send({msg: 'This is CORS-enabled for all origins!'});
 			});
-			app.post('/api/:service', function(req, res) {
+			app.post('/api/v100/:service', function(req, res) {
 
 				var service = req.params.service;
 				let run = runInitializer({
