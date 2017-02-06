@@ -1,14 +1,14 @@
 {
   "name": "lambda-node-framework",
   "version": "1.5.0",
-  "description": "",
+  "description": "nodejs amazon lambda framework",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pythagorasllc/lambda-framework.git"
+    "url": "git+https://github.com/pythagorasllc/lambda-framework.git"
   },
   "dependencies": {
     "aws-sdk": "^2.4.6",
@@ -38,6 +38,13 @@
     "yargs": "^4.7.1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "Westin Pigott",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pythagorasllc/lambda-framework/issues"
+  },
+  "homepage": "https://github.com/pythagorasllc/lambda-framework#readme",
+  "directories": {
+    "test": "tests"
+  }
 }
