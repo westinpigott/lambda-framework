@@ -7,6 +7,8 @@ let express = require('express'),
 	_ = require('lodash'),
 	cors = require('cors');
 
+let morgan = require('morgan');
+
 let _tools = require('./tools'),
 	_testHelper = require('./testHelper'),
 	runInitializer = require('./lambda/run');
@@ -37,13 +39,18 @@ module.exports = function(options){
 			var environment = serverOptions.env || 'dev';
 			let config = tools.configRequire(Path.join(ROOT_DIR, '/config'), environment);
 
-
-
 			let port = _.get(config, 'server.port', 3000 );
+			let morganConfig = {
+				format: _.get(config, 'express_morgan.format', 'tiny'),
+				options: _.get(config, 'express_morgan.options', {
+					skip: function(req, res) { return true }
+				})
+			};
 			let app = express();
 
 			app.use(bodyParser.json());
 			app.use(cors());
+			app.use(morgan(morganConfig.format, morganConfig.options));
 			app.get('/', function(req, res){
 				res.send({msg: 'This is CORS-enabled for all origins!'});
 			});
