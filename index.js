@@ -7,10 +7,13 @@ let express = require('express'),
 	_ = require('lodash'),
 	cors = require('cors');
 
+let morgan = require('morgan');
+
 let _tools = require('./tools'),
-	_gulp = require('./gulp'),
 	_testHelper = require('./testHelper'),
 	runInitializer = require('./lambda/run');
+
+const runInitializers = {};
 
 // start a new http server that will load up the different
 
@@ -19,35 +22,54 @@ module.exports = function(options){
 	const APP_DIR = Path.join(ROOT_DIR, 'app');
 
 	let tools = _tools(options);
-	let gulp = _gulp(options, tools);
+	let gulp;
 	let testHelper = _testHelper(options);
 	return {
 		tools: tools,
-		gulp: gulp,
+		gulp: function(){
+			if(!gulp){
+				const _gulp = require('./gulp');
+				gulp = _gulp(options, tools);
+			}
+
+			return gulp
+		},
 		testHelper: testHelper,
 		start: function(serverOptions){
 			var environment = serverOptions.env || 'dev';
 			let config = tools.configRequire(Path.join(ROOT_DIR, '/config'), environment);
 
-
-
 			let port = _.get(config, 'server.port', 3000 );
+			let morganConfig = {
+				format: _.get(config, 'express_morgan.format', 'tiny'),
+				options: _.get(config, 'express_morgan.options', {
+					skip: function(req, res) { return true }
+				})
+			};
 			let app = express();
 
 			app.use(bodyParser.json());
 			app.use(cors());
+      app.use(morgan(morganConfig.format, morganConfig.options));
+			app.get('/auth/fitbit/callback', function(req, res) {
+				res.status(302).redirect('/sleep');
+			});			
 			app.get('/', function(req, res){
 				res.send({msg: 'This is CORS-enabled for all origins!'});
 			});
 			app.post('/api/:version/:service', function(req, res) {
 
 				var service = req.params.service;
-				let run = runInitializer({
-					appPath: APP_DIR,
-					env: environment,
-					service: service,
-					localMode: true
-				});
+
+				if(!runInitializers[service]){
+					runInitializers[service] = runInitializer({
+						appPath: APP_DIR,
+						env: environment,
+						service: service,
+						localMode: true
+					});
+				}
+				let run = runInitializers[service];[]
 
 				run(req.body, null, function(error, response){
 					if(error){
