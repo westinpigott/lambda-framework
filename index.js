@@ -50,7 +50,10 @@ module.exports = function(options){
 
 			app.use(bodyParser.json());
 			app.use(cors());
-			app.use(morgan(morganConfig.format, morganConfig.options));
+      app.use(morgan(morganConfig.format, morganConfig.options));
+			app.get('/auth/fitbit/callback', function(req, res) {
+				res.status(302).redirect('/sleep');
+			});			
 			app.get('/', function(req, res){
 				res.send({msg: 'This is CORS-enabled for all origins!'});
 			});
