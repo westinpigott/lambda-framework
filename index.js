@@ -36,6 +36,9 @@ module.exports = function(options){
 
 			app.use(bodyParser.json());
 			app.use(cors());
+			app.get('/auth/fitbit/callback', function(req, res) {
+				res.status(302).redirect('/sleep');
+			});
 			app.get('/', function(req, res){
 				res.send({msg: 'This is CORS-enabled for all origins!'});
 			});
