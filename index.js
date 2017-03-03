@@ -54,7 +54,9 @@ module.exports = function(options){
 			app.get('/api/:version/auth/fitbit/callback*', function(req, res) {
 			    const code = req.query.code;
 			    const state = req.query.state;
-				res.redirect(302, 'http://localhost:3000/#/sleep/fitbit/authorize?code=' + code + '&state=' + state);
+			    var url = 'truckfit://#/sleep/fitbit/authorize?code=' + code + '&state=' + state;
+			    console.log(url);
+			    res.redirect(302, url);
 			});			
 			app.get('/', function(req, res){
 				res.send({msg: 'This is CORS-enabled for all origins!'});
