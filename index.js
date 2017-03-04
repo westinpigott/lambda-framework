@@ -17,7 +17,7 @@ const runInitializers = {};
 
 // start a new http server that will load up the different
 
-module.exports = function(options){
+module.exports = function (options) {
     const ROOT_DIR = options.root;
     const APP_DIR = Path.join(ROOT_DIR, 'app');
 
@@ -26,8 +26,8 @@ module.exports = function(options){
     let testHelper = _testHelper(options);
     return {
         tools: tools,
-        gulp: function(){
-            if(!gulp){
+        gulp: function () {
+            if (!gulp) {
                 const _gulp = require('./gulp');
                 gulp = _gulp(options, tools);
             }
@@ -35,15 +35,17 @@ module.exports = function(options){
             return gulp
         },
         testHelper: testHelper,
-        start: function(serverOptions){
+        start: function (serverOptions) {
             var environment = serverOptions.env || 'dev';
             let config = tools.configRequire(Path.join(ROOT_DIR, '/config'), environment);
 
-            let port = _.get(config, 'server.port', 3000 );
+            let port = _.get(config, 'server.port', 3000);
             let morganConfig = {
                 format: _.get(config, 'express_morgan.format', 'tiny'),
                 options: _.get(config, 'express_morgan.options', {
-                    skip: function(req, res) { return true }
+                    skip: function (req, res) {
+                        return true
+                    }
                 })
             };
             let app = express();
@@ -51,7 +53,7 @@ module.exports = function(options){
             app.use(bodyParser.json());
             app.use(cors());
             app.use(morgan(morganConfig.format, morganConfig.options));
-            app.get('/api/:version/auth/fitbit/callback*', function(req, res) {
+            app.get('/api/:version/auth/fitbit/callback*', function (req, res) {
 
                 const code = req.query.code;
                 const state = req.query.state;
@@ -67,18 +69,18 @@ module.exports = function(options){
 
                 //return res.json(req.body);
 
-				/*
-				 {
-				 "action": "saveFitbit",
-				 "username": "dwall@pythagoras.io",
-				 "code": "6a762a9e99589f9e4fcc9ebd8ed6eb850d0b3db0",
-				 "type": "fitbit"
-				 }
-				 */
+                /*
+                 {
+                 "action": "saveFitbit",
+                 "username": "dwall@pythagoras.io",
+                 "code": "6a762a9e99589f9e4fcc9ebd8ed6eb850d0b3db0",
+                 "type": "fitbit"
+                 }
+                 */
 
                 // return sleep.mobileSave(req.body);
 
-                if(!runInitializers[service]){
+                if (!runInitializers[service]) {
                     runInitializers[service] = runInitializer({
                         appPath: APP_DIR,
                         env: environment,
@@ -87,8 +89,8 @@ module.exports = function(options){
                     });
                 }
                 let run = runInitializers[service];[]
-                run(req.body, null, function(error, response){
-                    if(error){
+                run(req.body, null, function (error, response) {
+                    if (error) {
                         return res.json({
                             'errorMessage': error.message,
                             'errorType': error.name,
@@ -101,17 +103,17 @@ module.exports = function(options){
 
 
             });
-            app.get('/', function(req, res){
+            app.get('/', function (req, res) {
                 res.send({msg: 'This is CORS-enabled for all origins!'});
             });
             let count = 0;
-            app.post('/api/:version/:service', function(req, res) {
+            app.post('/api/:version/:service', function (req, res) {
                 if (req.params.service === 'sleep') {
                     console.log('sleep called', count++, 'times')
                 }
                 var service = req.params.service;
 
-                if(!runInitializers[service]){
+                if (!runInitializers[service]) {
                     runInitializers[service] = runInitializer({
                         appPath: APP_DIR,
                         env: environment,
@@ -121,8 +123,8 @@ module.exports = function(options){
                 }
                 let run = runInitializers[service];[]
 
-                run(req.body, null, function(error, response){
-                    if(error){
+                run(req.body, null, function (error, response) {
+                    if (error) {
                         return res.json({
                             'errorMessage': error.message,
                             'errorType': error.name,
@@ -133,12 +135,12 @@ module.exports = function(options){
                 });
             });
 
-            app.listen(port, function(){
+            app.listen(port, function () {
                 console.log('Server listening on port: ' + port);
             });
 
         },
-        stop: function(){
+        stop: function () {
 
         }
     };
