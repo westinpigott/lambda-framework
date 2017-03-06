@@ -67,19 +67,6 @@ module.exports = function (options) {
                 });
 
 
-                //return res.json(req.body);
-
-                /*
-                 {
-                 "action": "saveFitbit",
-                 "username": "dwall@pythagoras.io",
-                 "code": "6a762a9e99589f9e4fcc9ebd8ed6eb850d0b3db0",
-                 "type": "fitbit"
-                 }
-                 */
-
-                // return sleep.mobileSave(req.body);
-
                 if (!runInitializers[service]) {
                     runInitializers[service] = runInitializer({
                         appPath: APP_DIR,
