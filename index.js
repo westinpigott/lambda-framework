@@ -85,7 +85,7 @@ module.exports = function (options) {
                         });
                     }
                     // redirecting to same endpoint but removed call back to FE to save user info
-                    res.redirect(302, 'http://localhost:3000/#/sleep/fitbit/authorize?code=' + code + '&state=' + state);
+                    res.redirect(302, 'truckfit://#/sleep/fitbit/authorize?code=' + code + '&state=' + state);
                 });
 
 
