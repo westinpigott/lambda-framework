@@ -130,11 +130,11 @@ module.exports = function (options) {
         stop: function () {
 
         },
-        querySQS: function(serverOptions) {
+        initSQS: function(serverOptions) {
             var service = 'sqsmonitor';
 
             const body = {
-                action: 'handleIncomingMessage',
+                action: 'init',
             };
 
             if (!runInitializers[service]) {
@@ -157,6 +157,6 @@ module.exports = function (options) {
                 }
                 return response;
             });
-        }
+        },
     };
 };
