@@ -129,6 +129,34 @@ module.exports = function (options) {
         },
         stop: function () {
 
-        }
+        },
+        initSQS: function(serverOptions) {
+            var service = 'sqsmonitor';
+
+            const body = {
+                action: 'init',
+            };
+
+            if (!runInitializers[service]) {
+                runInitializers[service] = runInitializer({
+                    appPath: APP_DIR,
+                    env: serverOptions.env || 'dev',
+                    service: service,
+                    localMode: true
+                });
+            }
+            let run = runInitializers[service];[]
+
+            run(body, null, function (error, response) {
+                if (error) {
+                    return res.json({
+                        'errorMessage': error.message,
+                        'errorType': error.name,
+                        'stackTrace': error.stack.split(/\n/)
+                    });
+                }
+                return response;
+            });
+        },
     };
 };
