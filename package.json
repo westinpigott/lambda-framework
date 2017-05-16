@@ -1,6 +1,6 @@
 {
   "name": "lambda-node-framework",
-  "version": "1.8.5",
+  "version": "1.8.6",
   "description": "nodejs amazon lambda framework",
   "main": "index.js",
   "scripts": {
