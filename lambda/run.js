@@ -139,12 +139,16 @@ module.exports = function (overrides) {
 	}
 
 	function formatAndLogError(error) {
-		console.error(error.stack);
+		var stackTrace = 'No Stack Trace Available.';
+		if(error.stack) {
+            stackTrace = error.stack.split(/\n/);
+		}
+		console.error(error);
 		return {
 			statusCode: 500,
 			'errorMessage': error.message,
 			'errorType': error.name,
-			'stackTrace': error.stack.split(/\n/)
+			'stackTrace': stackTrace,
 		};
 	}
 
