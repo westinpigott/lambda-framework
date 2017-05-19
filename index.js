@@ -53,6 +53,9 @@ module.exports = function (options) {
             app.use(bodyParser.json());
             app.use(cors());
             app.use(morgan(morganConfig.format, morganConfig.options));
+            app.get('/health', function (req, res) {
+                res.status(200).send('OK')
+            });
             app.get('/api/:version/auth/fitbit/callback*', function (req, res) {
 
                 const code = req.query.code;
