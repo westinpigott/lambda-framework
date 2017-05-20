@@ -50,7 +50,7 @@ module.exports = function (options) {
             };
             let app = express();
 
-            app.use(bodyParser.json());
+            app.use(bodyParser.json({limit: config.jsonBodyParserLimit || '20mb'}));
             app.use(cors());
             app.use(morgan(morganConfig.format, morganConfig.options));
             app.get('/health', function (req, res) {
